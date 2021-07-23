@@ -17,6 +17,8 @@
 
 	//tank always has 1 crewmen slot reserved and 1 general slot for other roles.
 	passengers_slots = 1
+	//this is done in case VCs die inside the tank, so that someone else can come in and take them out.
+	revivable_dead_slots = 2
 	xenos_slots = 4
 
 	entrances = list(
