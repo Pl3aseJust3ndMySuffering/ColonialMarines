@@ -1925,6 +1925,8 @@
 #include "code\modules\vehicles\hardpoints\secondary\grenade_launcher.dm"
 #include "code\modules\vehicles\hardpoints\secondary\secondary.dm"
 #include "code\modules\vehicles\hardpoints\secondary\tow.dm"
+#include "code\modules\vehicles\hardpoints\special\firing_port_weapon.dm"
+#include "code\modules\vehicles\hardpoints\special\special.dm"
 #include "code\modules\vehicles\hardpoints\support\artillery.dm"
 #include "code\modules\vehicles\hardpoints\support\flare.dm"
 #include "code\modules\vehicles\hardpoints\support\iwsa.dm"
