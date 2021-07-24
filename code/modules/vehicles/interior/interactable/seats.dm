@@ -205,14 +205,15 @@
 		for(var/obj/item/hardpoint/special/firing_port_weapon/FPW in vehicle.hardpoints)
 			if(FPW.allowed_seat == seat)
 				vehicle.active_hp[seat] = FPW
-				to_chat(M, SPAN_NOTICE("You take the control of the M56 Firing Port Weapon."))
+				var/msg = SPAN_NOTICE("You take the control of the M56 Firing Port Weapon.")
 				if(FPW.reloading)
-					to_chat(M, SPAN_WARNING("The M56 FPW is currently reloading. Wait [(FPW.reload_time_started + FPW.reload_time - world.time) / 10] seconds."))
+					msg += SPAN_WARNING("The M56 FPW is currently reloading. Wait [SPAN_HELPFUL((FPW.reload_time_started + FPW.reload_time - world.time) / 10)] seconds.")
 				else if(FPW.ammo)
-					to_chat(M, SPAN_NOTICE("Ammo: <b>[SPAN_HELPFUL(FPW.ammo.current_rounds)]/[SPAN_HELPFUL(FPW.ammo.max_rounds)]</b>"))
+					msg += SPAN_NOTICE("Ammo: <b>[SPAN_HELPFUL(FPW.ammo.current_rounds)]/[SPAN_HELPFUL(FPW.ammo.max_rounds)]</b>")
 				else
-					to_chat(M, SPAN_DANGER("<b>ERROR. AMMO NOT FOUND, TELL A DEV!</b>"))
-				to_chat(M, SPAN_INFO("Use 'Reload Firing Port Weapon' verb in 'Vehicle' tab to activate automated reload."))
+					msg += SPAN_DANGER("<b>ERROR. AMMO NOT FOUND, TELL A DEV!</b>")
+				msg = SPAN_INFO("Use 'Reload Firing Port Weapon' verb in 'Vehicle' tab to activate automated reload.")
+				to_chat(M, msg)
 				return
 		to_chat(M, SPAN_WARNING("ERROR. NO FPW FOUND, TELL A DEV!"))
 
