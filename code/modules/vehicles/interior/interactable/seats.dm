@@ -46,6 +46,9 @@
 			M.client.pixel_x = 0
 			M.client.pixel_y = 0
 	else
+		if(M.stat == DEAD)
+			unbuckle()
+			return
 		vehicle.set_seated_mob(seat, M)
 		M.client.change_view(8)
 
