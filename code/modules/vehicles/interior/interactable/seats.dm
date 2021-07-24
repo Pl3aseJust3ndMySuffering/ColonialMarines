@@ -178,6 +178,26 @@
 	if(buckled_mob)
 		overlays += over_image
 
+/obj/structure/bed/chair/comfy/vehicle/support_gunner/handle_afterbuckle(var/mob/M)
+
+	if(!vehicle)
+		return
+
+	if(QDELETED(buckled_mob))
+		vehicle.set_seated_mob(seat, null)
+		M.unset_interaction()
+		if(M.client)
+			M.client.change_view(7)
+			M.client.pixel_x = 0
+			M.client.pixel_y = 0
+	else
+		if(M.stat == DEAD)
+			unbuckle()
+			return
+		vehicle.set_seated_mob(seat, M)
+		//port view ain't that good
+		M.client.change_view(6)
+
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/second
 	seat = VEHICLE_SUPPORT_GUNNER_TWO
 
