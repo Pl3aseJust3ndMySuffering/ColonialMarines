@@ -198,6 +198,10 @@
 		//port view ain't that good
 		M.client.change_view(6)
 
+		if(vehicle.health < initial(vehicle.health) / 2)
+			to_chat(M, SPAN_WARNING("\The [vehicle] is too damaged to operate the Firing Port Weapon!"))
+			return
+
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/second
 	seat = VEHICLE_SUPPORT_GUNNER_TWO
 
