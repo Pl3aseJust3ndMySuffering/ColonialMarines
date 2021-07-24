@@ -208,6 +208,10 @@
 				to_chat(M, SPAN_NOTICE("You take the control of the M56 Firing Port Weapon."))
 				if(FPW.reloading)
 					to_chat(M, SPAN_WARNING("The M56 FPW is currently reloading. Wait [(FPW.reload_time_started + FPW.reload_time - world.time) / 10] seconds."))
+				else if(FPW.ammo)
+					to_chat(M, SPAN_NOTICE("Ammo: <b>[SPAN_HELPFUL(FPW.ammo.current_rounds)]/[SPAN_HELPFUL(FPW.ammo.max_rounds)]</b>"))
+				else
+					to_chat(M, SPAN_DANGER("<b>ERROR. AMMO NOT FOUND, TELL A DEV!</b>"))
 				to_chat(M, SPAN_INFO("Use 'Reload Firing Port Weapon' verb in 'Vehicle' tab to activate automated reload."))
 				return
 		to_chat(M, SPAN_WARNING("ERROR. NO FPW FOUND, TELL A DEV!"))
