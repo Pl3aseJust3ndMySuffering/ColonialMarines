@@ -166,6 +166,21 @@
 
 	return ..()
 
+/obj/structure/bed/chair/comfy/vehicle/support_gunner/do_buckle(var/mob/target, var/mob/user)
+	. = ..()
+	update_icon()
+
+/obj/structure/bed/chair/comfy/vehicle/support_gunner/update_icon()
+	overlays.Cut()
+
+	..()
+
+	if(buckled_mob)
+		overlays += over_image
+
+/obj/structure/bed/chair/comfy/vehicle/support_gunner/second
+	seat = VEHICLE_SUPPORT_GUNNER_TWO
+
 //Armored vehicles passenger seats
 /obj/structure/bed/chair/vehicle
 	name = "passenger seat"
