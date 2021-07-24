@@ -206,6 +206,8 @@
 			if(FPW.allowed_seat == seat)
 				vehicle.active_hp[seat] = FPW
 				to_chat(M, SPAN_NOTICE("You take the control of the M56 Firing Port Weapon."))
+				if(FPW.reloading)
+					to_chat(M, SPAN_WARNING("The M56 FPW is currently reloading. Wait [(FPW.reload_time_started + FPW.reload_time - world.time) / 10] seconds."))
 				to_chat(M, SPAN_INFO("Use 'Reload Firing Port Weapon' verb in 'Vehicle' tab to activate automated reload."))
 				return
 		to_chat(M, SPAN_WARNING("ERROR. NO FPW FOUND, TELL A DEV!"))
