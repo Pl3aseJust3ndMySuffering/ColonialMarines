@@ -15,6 +15,9 @@
 	// Which seat this is in the vehicle
 	var/seat = null
 
+	// Which vehicle skill level required to use this
+	var/required_skill = SKILL_VEHICLE_SMALL
+
 /obj/structure/bed/chair/comfy/vehicle/ex_act()
 	return
 
@@ -28,6 +31,9 @@
 
 /obj/structure/bed/chair/comfy/vehicle/afterbuckle(var/mob/M)
 	..()
+	handle_afterbuckle(M)
+
+/obj/structure/bed/chair/comfy/vehicle/proc/handle_afterbuckle(var/mob/M)
 
 	if(!vehicle)
 		return
@@ -53,7 +59,8 @@
 	seat = VEHICLE_DRIVER
 
 /obj/structure/bed/chair/comfy/vehicle/driver/do_buckle(var/mob/target, var/mob/user)
-	if(!skillcheck(target, SKILL_VEHICLE, vehicle.required_skill))
+	required_skill = vehicle.required_skill
+	if(!skillcheck(target, SKILL_VEHICLE, required_skill))
 		if(target == user)
 			to_chat(user, SPAN_WARNING("You have no idea how to drive this thing!"))
 		return FALSE
@@ -64,10 +71,11 @@
 /obj/structure/bed/chair/comfy/vehicle/gunner
 	name = "gunner's seat"
 	seat = VEHICLE_GUNNER
+	required_skill = SKILL_VEHICLE_CREWMAN
 
 /obj/structure/bed/chair/comfy/vehicle/gunner/do_buckle(var/mob/target, var/mob/user)
 	// Gunning always requires crewman-level skill
-	if(!skillcheck(target, SKILL_VEHICLE, SKILL_VEHICLE_CREWMAN))
+	if(!skillcheck(target, SKILL_VEHICLE, required_skill))
 		if(target == user)
 			to_chat(user, SPAN_WARNING("You have no idea how to operate the weapons on this thing!"))
 		return FALSE
