@@ -149,6 +149,23 @@
 	if(buckled_mob)
 		overlays += over_image
 
+
+//armored vehicles support gunner seat
+
+/obj/structure/bed/chair/comfy/vehicle/support_gunner
+	name = "support gunner's seat"
+	seat = VEHICLE_SUPPORT_GUNNER_ONE
+
+	required_skill = SKILL_VEHICLE_DEFAULT
+
+	var/image/over_image = null
+
+/obj/structure/bed/chair/comfy/vehicle/support_gunner/Initialize(mapload)
+	over_image = image('icons/obj/vehicles/interiors/general.dmi', "armor_chair_buckled")
+	over_image.layer = ABOVE_MOB_LAYER
+
+	return ..()
+
 //Armored vehicles passenger seats
 /obj/structure/bed/chair/vehicle
 	name = "passenger seat"
