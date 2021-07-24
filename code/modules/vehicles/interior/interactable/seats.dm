@@ -202,6 +202,14 @@
 			to_chat(M, SPAN_WARNING("\The [vehicle] is too damaged to operate the Firing Port Weapon!"))
 			return
 
+		for(var/obj/item/hardpoint/special/firing_port_weapon/FPW in vehicle.hardpoints)
+			if(FPW.allowed_seat == seat)
+				vehicle.active_hp[seat] = FPW
+				to_chat(M, SPAN_NOTICE("You take the control of the M56 Firing Port Weapon."))
+				to_chat(M, SPAN_INFO("Use 'Reload Firing Port Weapon' verb in 'Vehicle' tab to activate automated reload."))
+				return
+		to_chat(M, SPAN_WARNING("ERROR. NO FPW FOUND, TELL A DEV!"))
+
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/second
 	seat = VEHICLE_SUPPORT_GUNNER_TWO
 
