@@ -41,23 +41,6 @@
 	RRS.total = 1
 	role_reserved_slots += RRS
 
-/obj/vehicle/multitile/apc/medical/decrepit/load_hardpoints(var/obj/vehicle/multitile/R)
-	add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
-	add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
-	add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
-	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
-
-/obj/vehicle/multitile/apc/medical/decrepit/load_damage(var/obj/vehicle/multitile/R)
-	take_damage_type(1e8, "abstract")
-	take_damage_type(1e8, "abstract")
-	healthcheck()
-
-/obj/vehicle/multitile/apc/medical/fixed/load_hardpoints(var/obj/vehicle/multitile/R)
-	add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
-	add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
-	add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
-	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
-
 /obj/vehicle/multitile/apc/medical/add_seated_verbs(var/mob/living/M, var/seat)
 	if(!M.client)
 		return
@@ -97,3 +80,27 @@
 			/obj/vehicle/multitile/proc/cycle_hardpoint,
 			/obj/vehicle/multitile/proc/toggle_shift_click,
 		))
+
+/*
+** PRESETS
+*/
+
+/obj/vehicle/multitile/apc/medical/decrepit/load_hardpoints(var/obj/vehicle/multitile/R)
+	add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
+	add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
+	add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
+	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+
+/obj/vehicle/multitile/apc/medical/decrepit/load_damage(var/obj/vehicle/multitile/R)
+	take_damage_type(1e8, "abstract")
+	take_damage_type(1e8, "abstract")
+	healthcheck()
+
+/obj/vehicle/multitile/apc/medical/fixed/load_hardpoints(var/obj/vehicle/multitile/R)
+	add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
+	add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
+	add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
+	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+
+/obj/vehicle/multitile/apc/medical/plain/load_hardpoints(var/obj/vehicle/multitile/R)
+	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)

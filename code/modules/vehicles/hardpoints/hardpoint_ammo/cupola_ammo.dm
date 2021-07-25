@@ -20,11 +20,3 @@
 
 /obj/item/ammo_magazine/hardpoint/m56_cupola/frontal_cannon/update_icon()
 	icon_state = "frontal_[current_rounds <= 0 ? "0" : "1"]"
-
-/obj/item/ammo_magazine/hardpoint/m56_cupola/firing_port_weapon
-	name = "M56B FPW Magazine"
-	desc = "A firing port weapon magazine."
-	icon_state = "cupola_1"
-	default_ammo = /datum/ammo/bullet/smartgun
-	max_rounds = 51
-	gun_type = /obj/item/hardpoint/special/firing_port_weapon

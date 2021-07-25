@@ -16,14 +16,14 @@
 	var/burst_amount = 3
 	//FPWs reload automatically
 	var/reloading = FALSE
-	var/reload_time = 60 SECONDS
+	var/reload_time = 90 SECONDS
 	var/reload_time_started = 0
 
 	allowed_seat = VEHICLE_SUPPORT_GUNNER_ONE
 
 	origins = list(0, 0)
 
-	ammo = new /obj/item/ammo_magazine/hardpoint/m56_cupola/firing_port_weapon
+	ammo = new /obj/item/ammo_magazine/hardpoint/firing_port_weapon
 	max_clips = 1
 
 	muzzle_flash_pos = list(
@@ -90,7 +90,7 @@
 
 /obj/item/hardpoint/special/firing_port_weapon/reload(var/mob/user)
 	if(!ammo)
-		ammo = new /obj/item/ammo_magazine/hardpoint/m56_cupola/firing_port_weapon
+		ammo = new /obj/item/ammo_magazine/hardpoint/firing_port_weapon
 	else
 		ammo.current_rounds = ammo.max_rounds
 	reloading = FALSE

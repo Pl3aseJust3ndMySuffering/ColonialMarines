@@ -151,6 +151,9 @@
 
 	return FALSE
 
+/*
+** PRESETS
+*/
 
 /obj/vehicle/multitile/apc/command/decrepit/load_hardpoints(var/obj/vehicle/multitile/R)
 	add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
@@ -167,4 +170,7 @@
 	add_hardpoint(new /obj/item/hardpoint/primary/dualcannon)
 	add_hardpoint(new /obj/item/hardpoint/secondary/frontalcannon)
 	add_hardpoint(new /obj/item/hardpoint/support/flare_launcher)
+	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+
+/obj/vehicle/multitile/apc/command/plain/load_hardpoints(var/obj/vehicle/multitile/R)
 	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)

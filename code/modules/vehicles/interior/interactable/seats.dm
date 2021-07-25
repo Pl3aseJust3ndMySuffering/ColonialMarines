@@ -59,6 +59,7 @@
 // Driver's seat
 /obj/structure/bed/chair/comfy/vehicle/driver
 	name = "driver's seat"
+	desc = "Comfortable seat for a driver."
 	seat = VEHICLE_DRIVER
 
 /obj/structure/bed/chair/comfy/vehicle/driver/do_buckle(var/mob/target, var/mob/user)
@@ -73,6 +74,7 @@
 // Gunner seat
 /obj/structure/bed/chair/comfy/vehicle/gunner
 	name = "gunner's seat"
+	desc = "Comfortable seat for a gunner."
 	seat = VEHICLE_GUNNER
 	required_skill = SKILL_VEHICLE_CREWMAN
 
@@ -108,6 +110,7 @@
 //spawners located in interior_landmarks
 
 /obj/structure/bed/chair/comfy/vehicle/driver/armor
+	desc = "Military-grade seat for armored vehicle driver with some controls, switches and indicators."
 	var/image/over_image = null
 
 /obj/structure/bed/chair/comfy/vehicle/driver/armor/Initialize(mapload)
@@ -129,6 +132,7 @@
 		overlays += over_image
 
 /obj/structure/bed/chair/comfy/vehicle/gunner/armor
+	desc = "Military-grade seat for armored vehicle gunner with some controls, switches and indicators."
 	var/image/over_image = null
 
 /obj/structure/bed/chair/comfy/vehicle/gunner/armor/Initialize(mapload)
@@ -154,6 +158,7 @@
 
 /obj/structure/bed/chair/comfy/vehicle/support_gunner
 	name = "support gunner's seat"
+	desc = "Military-grade seat for a support gunner with some controls, switches and indicators."
 	seat = VEHICLE_SUPPORT_GUNNER_ONE
 
 	required_skill = SKILL_VEHICLE_DEFAULT
@@ -165,6 +170,14 @@
 	over_image.layer = ABOVE_MOB_LAYER
 
 	return ..()
+
+/obj/structure/bed/chair/comfy/vehicle/support_gunner/clicked(mob/user, list/mods)
+	if(mods["ctrl"])
+		do_buckle(user, user)
+		return TRUE
+
+	return ..()
+
 
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/do_buckle(var/mob/target, var/mob/user)
 	. = ..()

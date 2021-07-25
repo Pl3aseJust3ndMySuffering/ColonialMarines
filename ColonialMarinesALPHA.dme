@@ -1904,6 +1904,7 @@
 #include "code\modules\vehicles\hardpoints\hardpoint_ammo\autocannon_ammo.dm"
 #include "code\modules\vehicles\hardpoints\hardpoint_ammo\cupola_ammo.dm"
 #include "code\modules\vehicles\hardpoints\hardpoint_ammo\dualcannon_ammo.dm"
+#include "code\modules\vehicles\hardpoints\hardpoint_ammo\firing_port_weapon_ammo.dm"
 #include "code\modules\vehicles\hardpoints\hardpoint_ammo\flare_launcher_ammo.dm"
 #include "code\modules\vehicles\hardpoints\hardpoint_ammo\gl_ammo.dm"
 #include "code\modules\vehicles\hardpoints\hardpoint_ammo\hardpoint_ammo.dm"

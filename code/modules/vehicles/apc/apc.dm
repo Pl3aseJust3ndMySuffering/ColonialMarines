@@ -193,3 +193,34 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 	take_damage_type(1e8, "abstract")
 	take_damage_type(1e8, "abstract")
 	healthcheck()
+
+/obj/vehicle/multitile/apc/plain/load_hardpoints(var/obj/vehicle/multitile/R)
+	var/obj/item/hardpoint/special/firing_port_weapon/FPW = new
+	FPW.allowed_seat = VEHICLE_SUPPORT_GUNNER_ONE
+	add_hardpoint(FPW)
+	FPW.dir = turn(dir, 90)
+	FPW.origins = list(2, 0)
+
+	FPW = new
+	FPW.allowed_seat = VEHICLE_SUPPORT_GUNNER_TWO
+	add_hardpoint(FPW)
+	FPW.dir = turn(dir, -90)
+	FPW.origins = list(-2, 0)
+
+	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+
+/obj/vehicle/multitile/apc/plain_no_fpw/load_hardpoints(var/obj/vehicle/multitile/R)
+	add_hardpoint(new /obj/item/hardpoint/locomotion/apc_wheels)
+
+/obj/vehicle/multitile/apc/plain_fpw_no_wheels/load_hardpoints(var/obj/vehicle/multitile/R)
+	var/obj/item/hardpoint/special/firing_port_weapon/FPW = new
+	FPW.allowed_seat = VEHICLE_SUPPORT_GUNNER_ONE
+	add_hardpoint(FPW)
+	FPW.dir = turn(dir, 90)
+	FPW.origins = list(2, 0)
+
+	FPW = new
+	FPW.allowed_seat = VEHICLE_SUPPORT_GUNNER_TWO
+	add_hardpoint(FPW)
+	FPW.dir = turn(dir, -90)
+	FPW.origins = list(-2, 0)
