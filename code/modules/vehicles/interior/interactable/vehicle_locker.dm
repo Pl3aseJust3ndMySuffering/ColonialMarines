@@ -141,7 +141,7 @@
 	name = "wall-mounted surgery kit storage"
 	desc = "A small locker that securely stores a full surgical kit. ID-locked to surgeons."
 	icon_state = "locker_med"
-	role_restriction = list(JOB_CMO, JOB_DOCTOR, JOB_RESEARCHER, JOB_SYNTH, JOB_WO_CMO, JOB_WO_DOCTOR, JOB_WO_RESEARCHER, JOB_SEA, JOB_CLF_MEDIC, "Colonial Doctor", "Sorokyne Strata Doctor")
+	role_restriction = list(JOB_CMO, JOB_DOCTOR, JOB_RESEARCHER, JOB_SYNTH, JOB_WO_CMO, JOB_WO_DOCTOR, JOB_WO_RESEARCHER, JOB_SEA, JOB_CLF_MEDIC, "Colonial Doctor", "Sorokyne Strata Doctor", JOB_SYNTH, JOB_WO_SYNTH)
 
 	var/has_tray = TRUE
 

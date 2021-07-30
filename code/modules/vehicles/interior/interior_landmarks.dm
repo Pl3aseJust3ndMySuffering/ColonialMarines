@@ -65,6 +65,7 @@
 	S.icon_state = icon_state
 	S.layer = layer
 	S.vehicle = I.exterior
+	S.required_skill = S.vehicle.required_skill
 	S.setDir(dir)
 	S.alpha = alpha
 	S.update_icon()
@@ -109,6 +110,7 @@
 	S.icon = icon
 	S.icon_state = icon_state
 	S.vehicle = I.exterior
+	S.required_skill = S.vehicle.required_skill
 	S.setDir(dir)
 	S.update_icon()
 	S.alpha = alpha
@@ -126,6 +128,46 @@
 
 /obj/effect/landmark/interior/spawn/vehicle_gunner_seat/armor/on_load(var/datum/interior/I)
 	var/obj/structure/bed/chair/comfy/vehicle/gunner/armor/S = new(loc)
+
+	S.icon = icon
+	S.icon_state = icon_state
+	S.vehicle = I.exterior
+	S.setDir(dir)
+	S.alpha = alpha
+	S.update_icon()
+	S.handle_rotation()
+	S.pixel_x = pixel_x
+	S.pixel_y = pixel_y
+
+	qdel(src)
+
+/obj/effect/landmark/interior/spawn/vehicle_support_gunner_seat
+	name = "1st support gunner's seat spawner"
+	icon = 'icons/obj/vehicles/interiors/general.dmi'
+	icon_state = "armor_chair"
+	color = "#003300"
+
+/obj/effect/landmark/interior/spawn/vehicle_support_gunner_seat/on_load(var/datum/interior/I)
+	var/obj/structure/bed/chair/comfy/vehicle/support_gunner/S = new(loc)
+
+	S.icon = icon
+	S.icon_state = icon_state
+	S.vehicle = I.exterior
+	S.setDir(dir)
+	S.alpha = alpha
+	S.update_icon()
+	S.handle_rotation()
+	S.pixel_x = pixel_x
+	S.pixel_y = pixel_y
+
+	qdel(src)
+
+/obj/effect/landmark/interior/spawn/vehicle_support_gunner_seat/second
+	name = "2nd support gunner's seat spawner"
+	color = "#333300"
+
+/obj/effect/landmark/interior/spawn/vehicle_support_gunner_seat/second/on_load(var/datum/interior/I)
+	var/obj/structure/bed/chair/comfy/vehicle/support_gunner/second/S = new(loc)
 
 	S.icon = icon
 	S.icon_state = icon_state

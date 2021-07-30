@@ -86,10 +86,23 @@ GLOBAL_LIST_EMPTY(all_multi_vehicles)
 	var/passengers_slots = 2
 	//xenos passenger slots
 	var/xenos_slots = 2
+	//some vehicles have special slots for dead revivable corpses for various reasons
+	//revivable corpses slots
+	var/revivable_dead_slots = 0
 	//Special roles categories slots. These allow to set specific roles in categories with their own slots.
 	//For example, (list(JOB_CREWMAN, JOB_UPP_CREWMAN) = 2) means that USCM and UPP crewman will always have 2 slots reserved for them.
 	//Only first encounter of job will be checked for slots, so don't put job in more than one category.
 	var/list/role_reserved_slots = list()
+
+	//list of stuff we do NOT want to be pulled inside
+	var/list/forbidden_atoms = list(
+		/obj/structure/barricade,
+		/obj/structure/machinery/defenses,
+		/obj/structure/machinery/m56d_post,
+		/obj/structure/barricade,
+		/obj/structure/machinery/cm_vending,
+		/obj/structure/machinery/vending,
+	)
 
 	var/wall_ram_damage = 30
 	//allows more flexibility in ram damage
@@ -232,7 +245,7 @@ GLOBAL_LIST_EMPTY(all_multi_vehicles)
 	..()
 
 	for(var/obj/item/hardpoint/H in hardpoints)
-		to_chat(user, "There is a [H] module installed.")
+		to_chat(user, "There is \a [H] module installed.")
 		H.examine(user, TRUE)
 	if(clamped)
 		to_chat(user, "There is a vehicle clamp attached.")
