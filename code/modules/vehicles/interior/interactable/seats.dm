@@ -360,7 +360,6 @@
 		if(buckle_offset_y != 0)
 			M.pixel_y = mob_old_y
 			mob_old_y = 0
-		M.density = TRUE
 
 	for(var/obj/structure/bed/chair/vehicle/VS in get_turf(src))
 		if(VS != src)
@@ -374,6 +373,7 @@
 			else
 				if(VS.buckled_mob)
 					VS.buckled_mob.density = FALSE
+				M.density = TRUE
 			break
 
 	handle_rotation()
