@@ -59,12 +59,17 @@
 	},
 /area/space)
 "h" = (
-/obj/structure/bed/chair/vehicle{
-	dir = 4
-	},
 /obj/effect/landmark/interior/spawn/interior_viewport{
 	alpha = 100;
 	pixel_y = -2
+	},
+/obj/structure/bed/chair/vehicle{
+	dir = 1;
+	pixel_x = 8
+	},
+/obj/structure/bed/chair/vehicle{
+	dir = 1;
+	pixel_x = -8
 	},
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_3"
@@ -206,18 +211,23 @@
 /turf/open/void/vehicle,
 /area/space)
 "A" = (
-/obj/structure/bed/chair/vehicle{
-	dir = 4
-	},
 /obj/effect/landmark/interior/spawn/interior_viewport{
 	pixel_y = 28
+	},
+/obj/structure/bed/chair/vehicle{
+	pixel_x = 8
+	},
+/obj/structure/bed/chair/vehicle{
+	pixel_x = -8
 	},
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_3"
 	},
 /area/vehicle/apc)
 "B" = (
-/obj/structure/machinery/cm_vending/sorted/medical/blood,
+/obj/structure/machinery/cm_vending/sorted/medical/blood{
+	req_access = list()
+	},
 /turf/open/shuttle/vehicle/med{
 	icon_state = "dark_sterile_green_12"
 	},
@@ -284,7 +294,9 @@
 	},
 /area/vehicle/apc)
 "J" = (
-/obj/structure/machinery/cm_vending/sorted/medical,
+/obj/structure/machinery/cm_vending/sorted/medical{
+	req_access = list()
+	},
 /turf/open/shuttle/vehicle/med{
 	icon_state = "dark_sterile_green_6"
 	},
@@ -372,22 +384,28 @@
 /turf/open/void/vehicle,
 /area/space)
 "V" = (
-/obj/structure/bed/chair/vehicle{
-	dir = 1
+/obj/structure/barricade/handrail{
+	dir = 8
 	},
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_3_13"
 	},
 /area/vehicle/apc)
 "W" = (
-/obj/structure/bed/chair/vehicle,
 /obj/structure/transmitter{
 	layer = 3.1;
 	name = "APC Telephone";
 	phone_category = "Vehicles";
 	phone_id = "M577-MED APC";
-	pixel_x = -1;
-	pixel_y = 32
+	pixel_x = 6;
+	pixel_y = 31
+	},
+/obj/structure/extinguisher_cabinet/lifeboat{
+	pixel_x = -8;
+	pixel_y = 29
+	},
+/obj/structure/barricade/handrail{
+	dir = 8
 	},
 /turf/open/shuttle/vehicle{
 	icon_state = "floor_3_13"
@@ -395,7 +413,7 @@
 /area/vehicle/apc)
 "X" = (
 /obj/structure/interior_wall/apc{
-	icon_state = "wall_3";
+	icon_state = "wall_1";
 	opacity = 0
 	},
 /turf/open/void/vehicle,

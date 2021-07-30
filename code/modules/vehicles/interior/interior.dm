@@ -51,6 +51,9 @@
 	//revivable corpses slots taken
 	var/revivable_dead_taken_slots = 0
 
+	//list of stuff we do NOT want to be pulled inside. Taken from exterior's list
+	var/list/forbidden_atoms
+
 	//special roles passenger slots, kept in datums
 	var/list/role_reserved_slots = list()
 
@@ -97,8 +100,17 @@
 	handle_landmarks()
 
 	update_passenger_settings()
+	update_forbidden_atoms()
 
 	ready = TRUE
+
+//setup forbidden atoms list
+/datum/interior/proc/update_forbidden_atoms()
+	forbidden_atoms = list()
+	if(isVehicleMultitile(exterior))
+		var/obj/vehicle/multitile/V = exterior
+		if(length(V.forbidden_atoms))
+			forbidden_atoms = V.forbidden_atoms
 
 /datum/interior/proc/get_passengers()
 	if(!ready)
@@ -176,8 +188,12 @@
 	if(!A)
 		return
 
-	if(istype(A, /obj/structure/barricade) || istype(A, /obj/structure/machinery/defenses) || istype(A, /obj/structure/machinery/m56d_post))
-		return FALSE
+	if(forbidden_atoms)
+		for(var/type in forbidden_atoms)
+			if(istype(A, type))
+				if(A.pulledby)
+					to_chat(A.pulledby, SPAN_WARNING("\The [A] won't fit inside!"))
+				return FALSE
 
 	// Ensure we have an accurate count before trying to enter
 	update_passenger_count()

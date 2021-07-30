@@ -403,7 +403,7 @@
 	if(dragged_atom)
 		var/success = interior.enter(dragged_atom, entrance_used)
 		if(!success)
-			to_chat(M, SPAN_NOTICE("You fail to fit [dragged_atom] inside \the [src] and leave [ismob(dragged_atom) ? "them" : "it"] outside."))
+			to_chat(M, SPAN_WARNING("You fail to fit [dragged_atom] inside \the [src] and leave [ismob(dragged_atom) ? "them" : "it"] outside."))
 
 /obj/vehicle/multitile/proc/handle_fitting_pulled_atom(var/mob/M, var/atom/dragged_atom)
 	if(!ishuman(M))

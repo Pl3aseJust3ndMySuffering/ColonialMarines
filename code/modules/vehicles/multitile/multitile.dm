@@ -94,6 +94,16 @@ GLOBAL_LIST_EMPTY(all_multi_vehicles)
 	//Only first encounter of job will be checked for slots, so don't put job in more than one category.
 	var/list/role_reserved_slots = list()
 
+	//list of stuff we do NOT want to be pulled inside
+	var/list/forbidden_atoms = list(
+		/obj/structure/barricade,
+		/obj/structure/machinery/defenses,
+		/obj/structure/machinery/m56d_post,
+		/obj/structure/barricade,
+		/obj/structure/machinery/cm_vending,
+		/obj/structure/machinery/vending,
+	)
+
 	var/wall_ram_damage = 30
 	//allows more flexibility in ram damage
 	var/vehicle_ram_multiplier = 1

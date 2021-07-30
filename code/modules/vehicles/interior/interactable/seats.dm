@@ -50,7 +50,8 @@
 			unbuckle()
 			return
 		vehicle.set_seated_mob(seat, M)
-		M.client.change_view(8)
+		if(M && M.client)
+			M.client.change_view(8)
 
 // Pass movement relays to the vehicle
 /obj/structure/bed/chair/comfy/vehicle/relaymove(mob/user, direction)
@@ -84,6 +85,15 @@
 		if(target == user)
 			to_chat(user, SPAN_WARNING("You have no idea how to operate the weapons on this thing!"))
 		return FALSE
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.allow_gun_usage)
+			if(isSynth(user))
+				to_chat(user, SPAN_WARNING("Your programming does not allow you to use heavy weaponry."))
+			else
+				to_chat(user, SPAN_WARNING("You are unable to use heavy weaponry."))
+			return
 
 	for(var/obj/item/I in user.contents)		//prevents shooting while zoomed in, but zoom can still be activated and used without shooting
 		if(I.zoom)
@@ -171,16 +181,18 @@
 
 	return ..()
 
-/obj/structure/bed/chair/comfy/vehicle/support_gunner/clicked(mob/user, list/mods)
-	if(mods["ctrl"])
-		do_buckle(user, user)
-		return TRUE
-
-	return ..()
-
 
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/do_buckle(var/mob/target, var/mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.allow_gun_usage)
+			if(isSynth(user))
+				to_chat(user, SPAN_WARNING("Your programming does not allow you to use firearms."))
+			else
+				to_chat(user, SPAN_WARNING("You are unable to use firearms."))
+			return
 	. = ..()
+
 	update_icon()
 
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/update_icon()
@@ -209,7 +221,8 @@
 			return
 		vehicle.set_seated_mob(seat, M)
 		//port view ain't that good
-		M.client.change_view(6)
+		if(M && M.client)
+			M.client.change_view(6)
 
 		if(vehicle.health < initial(vehicle.health) / 2)
 			to_chat(M, SPAN_WARNING("\The [vehicle] is too damaged to operate the Firing Port Weapon!"))
@@ -233,50 +246,42 @@
 /obj/structure/bed/chair/comfy/vehicle/support_gunner/second
 	seat = VEHICLE_SUPPORT_GUNNER_TWO
 
-//Armored vehicles passenger seats
+//ARMORED VEHICLES PASSENGER SEATS
+//Unique feature - you can put two seats on same tile with different pixel_offsets, humans will be buckled with respective offsets
+//and only when both seats taken, seats will be made dense and, therefore, tile will become unpassible
+
+//DOES NOT SUPPORT MORE THAN TWO SEATS ON TILE
 /obj/structure/bed/chair/vehicle
 	name = "passenger seat"
-	desc = "A sturdy chair with a brace that lowers over your body. Holds you in place during vehicle movement. Fix with welding tool in case of damage."
+	desc = "A sturdy chair with a brace that lowers over your body. Prevents being flung around in vehicle during crash being injured as a result. Fasten your seatbelts, kids! Fix with welding tool in case of damage."
 	icon = 'icons/obj/vehicles/interiors/general.dmi'
 	icon_state = "vehicle_seat"
 	var/image/chairbar = null
 	var/broken = FALSE
 	buildstacktype = 0
+
 	unslashable = FALSE
 	unacidable = TRUE
-	var/is_animating = 0
 
-/obj/structure/bed/chair/vehicle/proc/break_seat()
-	broken = TRUE
-	if(buckled_mob)
-		unbuckle()
-	icon_state = "vehicle_seat_destroyed"
-
-/obj/structure/bed/chair/vehicle/proc/repair_seat()
-	broken = FALSE
-	icon_state = "vehicle_seat"
-
-/obj/structure/bed/chair/vehicle/rotate()
-	return
-
-/obj/structure/bed/chair/vehicle/ex_act(severity)
-	if(broken || indestructible)
-		return
-	switch(severity)
-		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if (prob(20))
-				break_seat()
-		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			if (prob(60))
-				break_seat()
-		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			break_seat()
+	var/buckle_offset_x = 0
+	var/mob_old_x = 0
+	var/buckle_offset_y = 0
+	var/mob_old_y = 0
 
 /obj/structure/bed/chair/vehicle/Initialize()
 	. = ..()
 	chairbar = image('icons/obj/vehicles/interiors/general.dmi', "vehicle_bars")
 	chairbar.layer = ABOVE_MOB_LAYER
+
+	addtimer(CALLBACK(src, .proc/setup_buckle_offsets), 1 SECONDS)
+
 	handle_rotation()
+
+/obj/structure/bed/chair/vehicle/proc/setup_buckle_offsets()
+	if(pixel_x != 0)
+		buckle_offset_x = pixel_x
+	if(pixel_y != 0)
+		buckle_offset_y = pixel_y
 
 /obj/structure/bed/chair/vehicle/handle_rotation()
 	if(dir == NORTH)
@@ -286,20 +291,105 @@
 	if(buckled_mob)
 		buckled_mob.setDir(dir)
 
-/obj/structure/bed/chair/vehicle/afterbuckle()
-	if(buckled_mob)
-		icon_state = initial(icon_state) + "_buckled"
-		overlays += chairbar
-	else
-		icon_state = initial(icon_state)
-		overlays -= chairbar
-	handle_rotation()
+//------BUCKLING AND UNBUCKLING
 
+//trying to buckle a mob
 /obj/structure/bed/chair/vehicle/buckle_mob(mob/M, mob/user)
+	if(!ismob(M) || (get_dist(src, user) > 1) || user.is_mob_restrained() || user.lying || user.stat || buckled_mob || M.buckled)
+		return
+
+	if(isXeno(user))
+		to_chat(user, SPAN_WARNING("You don't have the dexterity to do that, try a nest."))
+		return
+	if(iszombie(user))
+		return
+
 	if(broken)
 		to_chat(user, SPAN_WARNING("\The [name] is broken and requires fixing with a welder!"))
 		return
-	..()
+
+	if(density)
+		density = 0
+		if(!step(M, get_dir(M, src)) && loc != M.loc)
+			density = 1
+			return
+		density = 1
+	else
+		if(M.loc != loc)
+			return
+
+	if(M.mob_size > MOB_SIZE_HUMAN)
+		to_chat(user, SPAN_WARNING("[M] is too big to buckle in."))
+		return
+
+	do_buckle(M, user)
+
+// the actual buckling proc
+/obj/structure/bed/chair/vehicle/do_buckle(mob/target, mob/user)
+	send_buckling_message(target, user)
+	if(src && loc)
+		target.buckled = src
+		target.forceMove(loc)
+		target.setDir(dir)
+		target.update_canmove()
+		buckled_mob = target
+		add_fingerprint(user)
+		afterbuckle(target)
+		return TRUE
+
+/obj/structure/bed/chair/vehicle/afterbuckle(mob/M)
+	if(buckled_mob)
+		if(buckled_mob != M)
+			return
+		icon_state = initial(icon_state) + "_buckled"
+		overlays += chairbar
+
+		if(buckle_offset_x != 0)
+			mob_old_x = M.pixel_x
+			M.pixel_x = buckle_offset_x
+		if(buckle_offset_y != 0)
+			mob_old_y = M.pixel_y
+			M.pixel_y = buckle_offset_y
+	else
+		icon_state = initial(icon_state)
+		overlays -= chairbar
+
+		if(buckle_offset_x != 0)
+			M.pixel_x = mob_old_x
+			mob_old_x = 0
+		if(buckle_offset_y != 0)
+			M.pixel_y = mob_old_y
+			mob_old_y = 0
+		M.density = FALSE
+
+	for(var/obj/structure/bed/chair/vehicle/VS in get_turf(src))
+		if(VS != src)
+			//if both seats on same tile have buckled mob, we become dense, otherwise, not dense.
+			if(buckled_mob)
+				if(VS.buckled_mob)
+					buckled_mob.density = TRUE
+					VS.buckled_mob.density = TRUE
+				else
+					buckled_mob.density = FALSE
+			else
+				if(VS.buckled_mob)
+					VS.buckled_mob.density = FALSE
+			break
+
+	handle_rotation()
+
+/obj/structure/bed/chair/vehicle/unbuckle()
+	if(buckled_mob && buckled_mob.buckled == src)
+		buckled_mob.buckled = null
+		buckled_mob.anchored = initial(buckled_mob.anchored)
+		buckled_mob.update_canmove()
+
+		var/M = buckled_mob
+		buckled_mob = null
+
+		afterbuckle(M)
+
+//attack handling
 
 /obj/structure/bed/chair/vehicle/attack_alien(mob/living/user)
 	if(!broken && !unslashable)
@@ -320,3 +410,32 @@
 				SPAN_WARNING("You repair \the [src]."))
 				repair_seat()
 				return
+
+//breaking and repairing seats
+/obj/structure/bed/chair/vehicle/proc/break_seat()
+	broken = TRUE
+	if(buckled_mob)
+		unbuckle()
+	icon_state = "vehicle_seat_destroyed"
+
+/obj/structure/bed/chair/vehicle/proc/repair_seat()
+	broken = FALSE
+	icon_state = "vehicle_seat"
+
+//MISC
+
+/obj/structure/bed/chair/vehicle/ex_act(severity)
+	if(broken || indestructible)
+		return
+	switch(severity)
+		if(0 to EXPLOSION_THRESHOLD_LOW)
+			if (prob(20))
+				break_seat()
+		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
+			if (prob(60))
+				break_seat()
+		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
+			break_seat()
+
+/obj/structure/bed/chair/vehicle/rotate()
+	return
