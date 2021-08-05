@@ -117,6 +117,7 @@
 
 	addtimer(CALLBACK(src, .proc/ares_online), 5 SECONDS)
 	addtimer(CALLBACK(src, .proc/map_announcement), 20 SECONDS)
+	addtimer(CALLBACK(src, .proc/orbital_burn), 40 SECONDS)
 
 	return ..()
 
@@ -142,6 +143,12 @@
 	var/name = "ARES Online"
 	var/input = "ARES. Online. Good morning, marines."
 	shipwide_ai_announcement(input, name, 'sound/AI/ares_online.ogg')
+
+/datum/game_mode/colonialmarines/proc/orbital_burn()
+	marine_announcement("The final orbital correction burn has now begun. Estimated arrival time is 10 minutes, get ready to deploy.", "[MAIN_SHIP_NAME]")
+	world << sound('sound/effects/explosionfar.ogg')
+	sleep(6000)
+	marine_announcement("The orbital burn is completed, the [MAIN_SHIP_NAME] is now aligned with the designated deployment area, deploy at will.", "[MAIN_SHIP_NAME]")
 
 /datum/game_mode/colonialmarines/proc/map_announcement()
 	if(SSmapping.configs[GROUND_MAP].announce_text)
