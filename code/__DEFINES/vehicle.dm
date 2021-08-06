@@ -51,4 +51,4 @@
 #define VEHICLE_CLASS_MEDIUM	(1<<3)		//medium class armor (tank)
 #define VEHICLE_CLASS_HEAVY		(1<<4)		//heavy class armor (tank)
 
-#define TANK_POPLOCK				15
+#define TANK_POPLOCK				10
